@@ -4,9 +4,9 @@ import time
 import os
 import logging
 
-# ====== إعدادات البوت ======
+# ====== إعدادات البوت (مُعدة لك) ======
 BOT_TOKEN = "8488107219:AAFhILss9EP3OF26DVLrwPGBoX41B0dYgyc"
-CHANNEL_IDS = ["@alarhkar", "@sana_hob"]   # أضف أسماء/معرفات القنوات هنا
+CHANNEL_IDS= ["@alarhkar", "@sana_hob"]   # أو استبدل برقم القناة لو خاص: "-1001234567890"
 AD_FILE = "ad3ya.txt"      # ملف الأدعية (كل سطر دعاء منفصل)
 SLEEP_SECONDS = 3600       # 1800 = ساعة واحدة
 
@@ -38,10 +38,10 @@ def send_message(token, chat_id, text):
         if not j.get("ok"):
             logging.error(f"Telegram API رجعت خطأ: {j}")
             return False
-        logging.info(f"تم الإرسال بنجاح إلى {chat_id}.")
+        logging.info("تم الإرسال بنجاح.")
         return True
     except requests.RequestException as e:
-        logging.exception(f"خطأ أثناء الإرسال إلى {chat_id}: {e}")
+        logging.exception(f"خطأ أثناء الإرسال: {e}")
         return False
 
 def main():
@@ -55,10 +55,9 @@ def main():
         try:
             dua = random.choice(duas)
             logging.info(f"إرسال الدعاء: {dua[:80]}{'...' if len(dua)>80 else ''}")
-            for channel in CHANNEL_IDS:   # يرسل لكل قناة في القائمة
-                ok = send_message(BOT_TOKEN, channel, dua)
-                if not ok:
-                    logging.warning(f"فشل الإرسال للقناة {channel}")
+            ok = send_message(BOT_TOKEN, CHANNEL_ID, dua)
+            if not ok:
+                logging.warning("فشل الإرسال — سيتم المحاولة بعد المؤقت التالي.")
             # انتظر مدة محددة قبل الإرسال التالي
             time.sleep(SLEEP_SECONDS)
         except KeyboardInterrupt:
@@ -66,7 +65,7 @@ def main():
             break
         except Exception as e:
             logging.exception(f"خطأ غير متوقع في الحلقة: {e}")
-            # عند حدوث خطأ غير متوقع ننتظر دقيقة ثم نعيد المحاولة
+            # عند حدوث خطأ غير متوقع ننتظر دقائق ثم نعيد المحاولة
             time.sleep(60)
 
 if name == "__main__":
