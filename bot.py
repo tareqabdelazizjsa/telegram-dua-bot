@@ -1,3 +1,4 @@
+# bot.py — بوت أدعية بسيط يرسل دعاء عشوائي كل ساعة إلى قناة @alarhkar
 import requests
 import random
 import time
@@ -6,9 +7,9 @@ import logging
 
 # ====== إعدادات البوت (مُعدة لك) ======
 BOT_TOKEN = "8488107219:AAFhILss9EP3OF26DVLrwPGBoX41B0dYgyc"
-CHANNEL_IDS= ["@alarhkar", "@sana_hob"]   # أو استبدل برقم القناة لو خاص: "-1001234567890"
+CHANNEL_ID = "@alarhkar"   # أو استبدل برقم القناة لو خاص: "-1001234567890"
 AD_FILE = "ad3ya.txt"      # ملف الأدعية (كل سطر دعاء منفصل)
-SLEEP_SECONDS = 3600       # 1800 = ساعة واحدة
+SLEEP_SECONDS = 3600       # 3600 = ساعة واحدة
 
 # ====== سجلّ بسيط (لوغ) ======
 logging.basicConfig(
@@ -68,5 +69,5 @@ def main():
             # عند حدوث خطأ غير متوقع ننتظر دقائق ثم نعيد المحاولة
             time.sleep(60)
 
-if name == "__main__":
+if __name__ == "__main__":
     main()
