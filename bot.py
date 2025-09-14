@@ -1,15 +1,14 @@
-# bot.py — بوت أدعية بسيط يرسل دعاء عشوائي كل ساعة إلى قناة @alarhkar
 import requests
 import random
 import time
 import os
 import logging
 
-# ====== إعدادات البوت (مُعدة لك) ======
+# ====== إعدادات البوت ======
 BOT_TOKEN = "8488107219:AAFhILss9EP3OF26DVLrwPGBoX41B0dYgyc"
-CHANNEL_IDS= ["@alarhkar", "@sana_hob"]   # أو استبدل برقم القناة لو خاص: "-1001234567890"
+CHANNEL_IDS = ["@alarhkar", "@sana_hob"]   # أضف أسماء/معرفات القنوات هنا
 AD_FILE = "ad3ya.txt"      # ملف الأدعية (كل سطر دعاء منفصل)
-SLEEP_SECONDS = 3600       # 3600 = ساعة واحدة
+SLEEP_SECONDS = 3600       # 1800 = ساعة واحدة
 
 # ====== سجلّ بسيط (لوغ) ======
 logging.basicConfig(
@@ -39,10 +38,10 @@ def send_message(token, chat_id, text):
         if not j.get("ok"):
             logging.error(f"Telegram API رجعت خطأ: {j}")
             return False
-        logging.info("تم الإرسال بنجاح.")
+        logging.info(f"تم الإرسال بنجاح إلى {chat_id}.")
         return True
     except requests.RequestException as e:
-        logging.exception(f"خطأ أثناء الإرسال: {e}")
+        logging.exception(f"خطأ أثناء الإرسال إلى {chat_id}: {e}")
         return False
 
 def main():
@@ -56,9 +55,10 @@ def main():
         try:
             dua = random.choice(duas)
             logging.info(f"إرسال الدعاء: {dua[:80]}{'...' if len(dua)>80 else ''}")
-            ok = send_message(BOT_TOKEN, CHANNEL_ID, dua)
-            if not ok:
-                logging.warning("فشل الإرسال — سيتم المحاولة بعد المؤقت التالي.")
+            for channel in CHANNEL_IDS:   # يرسل لكل قناة في القائمة
+                ok = send_message(BOT_TOKEN, channel, dua)
+                if not ok:
+                    logging.warning(f"فشل الإرسال للقناة {channel}")
             # انتظر مدة محددة قبل الإرسال التالي
             time.sleep(SLEEP_SECONDS)
         except KeyboardInterrupt:
@@ -66,10 +66,8 @@ def main():
             break
         except Exception as e:
             logging.exception(f"خطأ غير متوقع في الحلقة: {e}")
-            # عند حدوث خطأ غير متوقع ننتظر دقائق ثم نعيد المحاولة
+            # عند حدوث خطأ غير متوقع ننتظر دقيقة ثم نعيد المحاولة
             time.sleep(60)
 
-if __name__ == "__main__":
+if name == "__main__":
     main()
-
-
