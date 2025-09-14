@@ -7,7 +7,7 @@ import logging
 
 # ====== إعدادات البوت (مُعدة لك) ======
 BOT_TOKEN = "8488107219:AAFhILss9EP3OF26DVLrwPGBoX41B0dYgyc"
-CHANNEL_ID = ["@alarhkar", "@sana_hob"]   # أو استبدل برقم القناة لو خاص: "-1001234567890"
+CHANNEL_IDS= ["@alarhkar", "@sana_hob"]   # أو استبدل برقم القناة لو خاص: "-1001234567890"
 AD_FILE = "ad3ya.txt"      # ملف الأدعية (كل سطر دعاء منفصل)
 SLEEP_SECONDS = 3600       # 3600 = ساعة واحدة
 
@@ -71,4 +71,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
